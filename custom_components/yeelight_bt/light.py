@@ -75,7 +75,7 @@ class YeelightBTLight(LightEntity):
     _attr_supported_color_modes = {ColorMode.BRIGHTNESS}
     _attr_color_mode = ColorMode.BRIGHTNESS
     _attr_supported_features = LightEntityFeature.EFFECT
-    _attr_effect_list = ["Candle"]
+    _attr_effect_list = ["Candle", "None"]
 
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry, lamp: Lamp, name: str, mac: str):
         self.hass = hass
@@ -240,7 +240,7 @@ class YeelightBTLight(LightEntity):
                     if self._consec_fail >= 3:
                         self._schedule_state_push()
 
-                await asyncio.sleep(20.0)  # poll interval; safe for battery & proxy
+                await asyncio.sleep(60.0)  # poll interval; safe for battery & proxy
         except asyncio.CancelledError:
             return
 
@@ -281,10 +281,10 @@ class YeelightBTLight(LightEntity):
                         # If a write fails (range/disconnect), back off a bit
                         await asyncio.sleep(0.25)
                     # small, slightly random dwell between micro steps
-                    await asyncio.sleep(random.uniform(0.15, 0.35))
+                    await asyncio.sleep(random.uniform(0.8, 1.5))
 
                 # Slight longer dwell before the next target; adds natural rhythm
-                await asyncio.sleep(random.uniform(0.2, 0.6))
+                await asyncio.sleep(random.uniform(1.5, 3.0))
 
         self._effect_task = asyncio.create_task(_candle_loop())
         self._schedule_state_push()
