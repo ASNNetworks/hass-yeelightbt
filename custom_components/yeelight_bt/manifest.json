@@ -1,6 +1,6 @@
 {
   "domain": "yeelight_bt",
-  "name": "Yeelight bluetooth",
+  "name": "Yeelight bluetooth Msallal",
   "bluetooth": [
     {
       "connectable": true,
@@ -11,13 +11,23 @@
       "local_name": "yeelight_ms*"
     }
   ],
-  "codeowners": ["@hcoohb"],
+  "codeowners": [
+    "@hcoohb",
+    "@ASNNetworks"
+  ],
   "config_flow": true,
-  "dependencies": ["bluetooth"],
-  "documentation": "https://github.com/hcoohb/hass-yeelightbt",
+  "dependencies": [
+    "bluetooth"
+  ],
+  "documentation": "https://github.com/ASNNetworks/hass-yeelightbt",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/hcoohb/hass-yeelightbt/issues",
-  "loggers": ["bleak"],
-  "requirements": ["bleak>=0.18.0", "bleak-retry-connector>=2.1.3"],
-  "version": "1.4.2"
+  "issue_tracker": "https://github.com/ASNNetworks/hass-yeelightbt/issues",
+  "loggers": [
+    "bleak"
+  ],
+  "requirements": [
+    "bleak>=0.18.0",
+    "bleak-retry-connector>=2.1.3"
+  ],
+  "version": "1.5.0"
 }
