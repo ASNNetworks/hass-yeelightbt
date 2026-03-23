@@ -71,7 +71,7 @@ async def async_setup_entry(
 class YeelightBTLight(LightEntity):
     """Home Assistant entity for Yeelight Candela over BLE."""
 
-    _attr_should_poll = True  # we also run a light heartbeat
+    _attr_should_poll = False  # we also run a light heartbeat
     _attr_supported_color_modes = {ColorMode.BRIGHTNESS}
     _attr_color_mode = ColorMode.BRIGHTNESS
     _attr_supported_features = LightEntityFeature.EFFECT
@@ -126,7 +126,7 @@ class YeelightBTLight(LightEntity):
         asyncio.create_task(_prime())
 
         # Start heartbeat: poll state periodically to catch manual changes
-        self._poll_task = asyncio.create_task(self._poll_loop())
+        # self._poll_task = asyncio.create_task(self._poll_loop())  # disabled: proxy polling causes flashing
 
     async def async_will_remove_from_hass(self) -> None:
         await self._stop_effect()
@@ -214,15 +214,8 @@ class YeelightBTLight(LightEntity):
             self._schedule_state_push()
 
     async def async_update(self) -> None:
-        # Skip polling if a command is in-flight
-        if self._busy_lock.locked():
-            return
-        try:
-            await self._dev.get_state()
-            self._consec_fail = 0
-        except Exception:
-            # Silent: proxies can be slower; the heartbeat loop tracks availability
-            self._consec_fail += 1
+        # Polling disabled for BT proxy - only update state on explicit commands
+        pass
 
     # ---- heartbeat loop to reflect manual changes & availability ----
     async def _poll_loop(self) -> None:
